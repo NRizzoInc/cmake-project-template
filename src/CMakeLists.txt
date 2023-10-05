@@ -26,6 +26,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# generate build metadata to store in binary
+include(embed_build_metadata)
+get_build_metadata("${ADDITIONAL_CMAKE_BUILD_DATA}")
+
 # ============================================ Build individual subdirs ============================================
-add_subdirectory(version)
 add_subdirectory(main)
