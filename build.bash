@@ -6,6 +6,18 @@ declare -A build_type_map=(
     ["debug"]="-DCMAKE_BUILD_TYPE=Debug"
 )
 
+# $1 = string to check if is a number
+# Returns 0 if not a number
+# Returns 1 if it is a number
+function IsNumber() {
+  local -r number_regex='^[0-9]+$'
+  if [[ $1 =~ $number_regex ]] ; then
+    echo 1
+  else
+    echo 0
+  fi
+}
+
 setup() {
     SCRIPTPATH=$(realpath "${BASH_SOURCE[0]}")
     SCRIPTDIR=$(dirname "$SCRIPTPATH")
@@ -109,8 +121,11 @@ parse_cli_opts() {
                 shift 1
                 ;;
             -j | --num-proc )
-                NPROC="$1"
-                shift 1
+                if [[ ! -z "$2" ]] && [[ $(IsNumber "$2") ]]; then
+                    NPROC="$2"
+                    echo "Using NPROC=$NPROC"
+                    shift
+                fi
                 ;;
             -b | --build-dir )
                 setup_build_dir "$2"
